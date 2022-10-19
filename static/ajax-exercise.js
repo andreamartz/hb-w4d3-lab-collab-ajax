@@ -3,7 +3,7 @@
 // PART 1: SHOW A FORTUNE
 
 // select the div with id fortune-text
-const fortuneDiv = document.querySelector('#fortune-text')
+const fortuneDiv = document.querySelector('#fortune-text');
 
 function showFortune(evt) {
   // send request to /fortune with fetch
@@ -18,6 +18,7 @@ const button = document.querySelector('#get-fortune-button');
 button.addEventListener('click', showFortune);
 
 // PART 2: SHOW WEATHER
+const weatherDiv = document.querySelector('#weather-info');
 
 function showWeather(evt) {
   evt.preventDefault();
@@ -26,6 +27,12 @@ function showWeather(evt) {
   const zipcode = document.querySelector('#zipcode-field').value;
 
   // TODO: request weather with that URL and show the forecast in #weather-info
+  fetch('/weather.json')
+  .then((response) => response.json())
+  .then((responseData) => {
+    console.log(responseData);
+    weatherDiv.innerHTML = responseData['forecast'];
+  });
 }
 
 document.querySelector('#weather-form').addEventListener('submit', showWeather);
