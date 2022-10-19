@@ -2,11 +2,20 @@
 
 // PART 1: SHOW A FORTUNE
 
-function showFortune(evt) {
-  // TODO: get the fortune and show it in the #fortune-text div
-}
+// select the div with id fortune-text
+const fortuneDiv = document.querySelector('#fortune-text')
 
-document.querySelector('#get-fortune-button').addEventListener('click', showFortune);
+function showFortune(evt) {
+  // send request to /fortune with fetch
+  fetch('/fortune')
+    .then((response) => response.text())
+    .then((responseData) => {
+      fortuneDiv.innerHTML = responseData;
+    });
+  // take the fortune returned and place it in the div with id fortune-text
+}
+const button = document.querySelector('#get-fortune-button');
+button.addEventListener('click', showFortune);
 
 // PART 2: SHOW WEATHER
 
