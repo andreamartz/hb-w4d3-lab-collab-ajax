@@ -40,9 +40,44 @@ document.querySelector('#weather-form').addEventListener('submit', showWeather);
 // PART 3: ORDER MELONS
 
 function orderMelons(evt) {
+  // prevent the default form submission behavior
+  // ** create a JavaScript object containing the form input data
+  // make a post request using fetch 
+    // fetch takes two arguments: 
+      // 1. the Flask route to submit to
+      // ** 2. the request body (a JS object)
   evt.preventDefault();
+  const formInput = {
+    melon_type: document.querySelector("#melon-type-field").value,
+    qty: document.querySelector("#qty-field").value,
+  };
+  
+  console.log({
+    method: 'POST',
+    body: JSON.stringify(formInput),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const orderStatus = document.querySelector("#order-status");
 
   // TODO: show the result message after your form
-  // TODO: if the result code is ERROR, make it show up in red (see our CSS!)
+  fetch('/order-melons.json', {
+      method: 'POST',
+      body: JSON.stringify(formInput),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((responseDataJSON) => {
+      console.log(responseDataJSON);
+      // alert(responseDataJSON[msg]);
+      orderStatus.insertAdjacentHTML('beforeend',responseDataJSON.msg);
+      if (responseDataJSON.code === "ERROR") {
+        orderStatus.classList.add("order-error");
+      }
+    });
 }
 document.querySelector('#order-form').addEventListener('submit', orderMelons);
